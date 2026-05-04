@@ -39,6 +39,7 @@
             transition: transform 0.3s ease;
         }
         .flying-env:hover { transform: scale(1.2); }
+        .flying-env.read { opacity: 0.5; filter: grayscale(1); }
     </style>
 </head>
 <body class="bg-rose-50 text-gray-800 overflow-hidden">
@@ -160,6 +161,8 @@
     <!-- Background Music -->
     <audio id="bg-music" src="images/song.mp3" loop></audio>
 
+    <audio id="pop-sound" src="images/pop.mp3" preload="auto"></audio>
+
     <!-- Floating Music Toggle -->
     <button id="music-toggle" class="fixed bottom-6 right-6 z-50 bg-rose-500 text-white p-3 rounded-full shadow-lg hover:bg-rose-600 transition-all focus:outline-none flex items-center justify-center w-12 h-12 cursor-pointer">
         <span id="music-icon" class="text-xl">🎵</span>
@@ -175,6 +178,7 @@
         const modal = document.getElementById('love-letter-modal');
         const specialPhoto = document.getElementById('special-photo');
         const closeModal = document.getElementById('close-modal');
+        const popSound = document.getElementById('pop-sound');
         const lightbox = document.getElementById('lightbox');
         const lightboxImg = document.getElementById('lightbox-img');
         const modalTitle = document.getElementById('modal-title');
@@ -222,6 +226,27 @@
 
                 env.addEventListener('click', (e) => {
                     e.stopPropagation();
+
+                    // Play explosion sound
+                    popSound.currentTime = 0; // Reset to start if clicked rapidly
+                    popSound.play().catch(err => console.log("Audio playback delayed until interaction:", err));
+
+                    // Create heart explosion at the envelope's location
+                    const rect = env.getBoundingClientRect();
+                    confetti({
+                        particleCount: 15,
+                        spread: 100,
+                        origin: { 
+                            x: (rect.left + rect.width / 2) / window.innerWidth,
+                            y: (rect.top + rect.height / 2) / window.innerHeight 
+                        },
+                        shapes: [confetti.shapeFromText({ text: '❤️', scalar: 2 })]
+                    });
+                    
+                    // Mark as read: dim the envelope and change the icon
+                    env.classList.add('read');
+                    env.innerHTML = '📩';
+
                     modalTitle.textContent = "A Little Note...";
                     modalContent.innerHTML = `<p>${msg}</p>`;
                     modal.classList.remove('opacity-0', 'invisible');
