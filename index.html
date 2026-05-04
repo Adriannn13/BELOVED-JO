@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>For Jo |</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600&family=Sour+Gummy:wght@400;600&display=swap" rel="stylesheet">
     <style>
         .font-romantic { font-family: 'Dancing Script', cursive; }
@@ -111,6 +112,21 @@
         <p class="text-sm text-gray-500 tracking-widest uppercase">sana all nalang eh no HAHAHAHA</p>
     </footer>
 
+    <!-- Styled Confirmation Modal -->
+    <div id="confirm-modal" class="fixed inset-0 z-[115] bg-black/60 flex items-center justify-center p-4 opacity-0 invisible transition-all duration-300">
+        <div class="bg-white w-full max-w-sm rounded-2xl p-8 shadow-2xl transform scale-95 transition-transform duration-300 text-center">
+            <h2 id="confirm-title" class="font-romantic text-3xl text-rose-600 mb-8">love moko?</h2>
+            <div id="confirm-actions" class="flex justify-center gap-4">
+                <button id="btn-yes" class="bg-rose-500 text-white px-8 py-2 rounded-full hover:bg-rose-600 transition-colors cursor-pointer font-bold">Yes</button>
+                <button id="btn-no" class="bg-gray-200 text-gray-700 px-8 py-2 rounded-full hover:bg-gray-300 transition-colors cursor-pointer font-bold">No</button>
+            </div>
+            <div id="confirm-result" class="hidden">
+                <p id="result-text" class="font-romantic text-3xl text-rose-500 mb-6"></p>
+                <button id="btn-proceed" class="bg-rose-500 text-white px-8 py-2 rounded-full hover:bg-rose-600 transition-colors cursor-pointer font-bold w-full">Okay</button>
+            </div>
+        </div>
+    </div>
+
     <!-- Love Letter Modal -->
     <div id="love-letter-modal" class="fixed inset-0 z-[110] bg-black/60 flex items-center justify-center p-4 opacity-0 invisible transition-all duration-300">
         <div class="bg-white w-full max-w-lg rounded-2xl p-8 shadow-2xl transform scale-95 transition-transform duration-300 relative">
@@ -151,22 +167,73 @@
         const lightboxImg = document.getElementById('lightbox-img');
         const closeLightbox = document.getElementById('close-lightbox');
         const lightboxTriggers = document.querySelectorAll('.lightbox-trigger');
+        
+        // Confirmation Modal Elements
+        const confirmModal = document.getElementById('confirm-modal');
+        const btnYes = document.getElementById('btn-yes');
+        const btnNo = document.getElementById('btn-no');
+        const confirmActions = document.getElementById('confirm-actions');
+        const confirmResult = document.getElementById('confirm-result');
+        const resultText = document.getElementById('result-text');
+        const btnProceed = document.getElementById('btn-proceed');
+        const confirmTitle = document.getElementById('confirm-title');
+
+        let lovesMe = false;
 
         // Envelope Click Logic
         envelope.addEventListener('click', () => {
-            // Stop shaking once clicked
-            envelope.classList.remove('shake');
-            // 1. Open the flap
-            flap.classList.add('open-flap');
-            
-            // 2. Play music (This works now because it's triggered by a click)
-            music.play().catch(e => console.log("Playback failed:", e));
-            
-            // 3. Reveal website
-            setTimeout(() => {
-                overlay.classList.add('opacity-0', 'invisible', 'scale-150');
-                document.body.classList.remove('overflow-hidden');
-            }, 800);
+            // Show the styled confirmation modal
+            confirmTitle.classList.remove('hidden');
+            confirmActions.classList.remove('hidden');
+            confirmResult.classList.add('hidden');
+            confirmModal.classList.remove('opacity-0', 'invisible');
+            setTimeout(() => confirmModal.querySelector('div').classList.replace('scale-95', 'scale-100'), 10);
+        });
+
+        btnYes.addEventListener('click', () => {
+            lovesMe = true;
+            confirmTitle.classList.add('hidden');
+            confirmActions.classList.add('hidden');
+            confirmResult.classList.remove('hidden');
+            resultText.textContent = "yehey";
+        });
+
+        btnNo.addEventListener('click', () => {
+            lovesMe = false;
+            confirmTitle.classList.add('hidden');
+            confirmActions.classList.add('hidden');
+            confirmResult.classList.remove('hidden');
+            resultText.textContent = "dapat love moko:(";
+        });
+
+        btnProceed.addEventListener('click', () => {
+            // Close Modal
+            confirmModal.classList.add('opacity-0', 'invisible');
+            confirmModal.querySelector('div').classList.replace('scale-100', 'scale-95');
+
+            if (lovesMe) {
+                // Celebration confetti!
+                confetti({
+                    particleCount: 150,
+                    spread: 70,
+                    origin: { y: 0.6 },
+                    colors: ['#f43f5e', '#fb7185', '#fda4af']
+                });
+
+                // Stop shaking once clicked
+                envelope.classList.remove('shake');
+                // 1. Open the flap
+                flap.classList.add('open-flap');
+                
+                // 2. Play music
+                music.play().catch(e => console.log("Playback failed:", e));
+                
+                // 3. Reveal website
+                setTimeout(() => {
+                    overlay.classList.add('opacity-0', 'invisible', 'scale-150');
+                    document.body.classList.remove('overflow-hidden');
+                }, 1000);
+            }
         });
 
         // Modal Logic
