@@ -26,6 +26,19 @@
         .shake {
             animation: shake-animation 4s infinite;
         }
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            25% { transform: translate(15px, -20px) rotate(10deg); }
+            50% { transform: translate(-15px, -30px) rotate(-10deg); }
+            75% { transform: translate(10px, -15px) rotate(5deg); }
+        }
+        .flying-env {
+            position: absolute;
+            animation: float 10s ease-in-out infinite;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+        .flying-env:hover { transform: scale(1.2); }
     </style>
 </head>
 <body class="bg-rose-50 text-gray-800 overflow-hidden">
@@ -131,10 +144,9 @@
     <div id="love-letter-modal" class="fixed inset-0 z-[110] bg-black/60 flex items-center justify-center p-4 opacity-0 invisible transition-all duration-300">
         <div class="bg-white w-full max-w-lg rounded-2xl p-8 shadow-2xl transform scale-95 transition-transform duration-300 relative">
             <button id="close-modal" class="absolute top-4 right-4 text-gray-400 hover:text-rose-500 text-3xl focus:outline-none">&times;</button>
-            <h2 class="font-romantic text-4xl text-rose-600 mb-6 text-center">My Dearest Jo,</h2>
-            <div class="space-y-4 text-gray-700 leading-relaxed italic text-lg">
-                <p>I wanted to take a moment to tell you how much you truly mean to me.</p>
-                <p>From the moment we met, I felt a connection that I can only describe as hope .</p>
+            <h2 id="modal-title" class="font-romantic text-4xl text-rose-600 mb-6 text-center"></h2>
+            <div id="modal-content" class="space-y-4 text-gray-700 leading-relaxed italic text-lg text-center">
+                <p>Ganda mo jo!, anw, may 1h ka pwedeng pautang? HAHHAHAHHAHAHAHAHAHAHHAH</p>
             </div>
         </div>
     </div>
@@ -165,6 +177,8 @@
         const closeModal = document.getElementById('close-modal');
         const lightbox = document.getElementById('lightbox');
         const lightboxImg = document.getElementById('lightbox-img');
+        const modalTitle = document.getElementById('modal-title');
+        const modalContent = document.getElementById('modal-content');
         const closeLightbox = document.getElementById('close-lightbox');
         const lightboxTriggers = document.querySelectorAll('.lightbox-trigger');
         
@@ -180,6 +194,43 @@
 
         let lovesMe = false;
 
+        // Sweet messages for flying envelopes
+        const sweetMessages = [
+            "parang mhie at dhie na talaga eh no",
+            "new loveteam na tatalo sa aldub",
+            "miss your laugh jo :)",
+            "sana di ka magsawa sa mukha ko.",
+            "i miss u jo.",
+            "u saved me, jo.",
+            "i hope this makes you smile :)",
+            "you deserve all the happiness in the world, jo.",
+
+        ];
+
+        function spawnFlyingEnvelopes() {
+            sweetMessages.forEach((msg, index) => {
+                const env = document.createElement('div');
+                env.className = 'flying-env text-4xl z-[101]';
+                env.innerHTML = '✉️';
+                
+                const x = Math.random() * 80 + 10; // Random horizontal position
+                const y = Math.random() * 80 + 10; // Random vertical position
+                env.style.left = `${x}%`;
+                env.style.top = `${y}%`;
+                env.style.animationDelay = `${index * 2}s`;
+                env.style.animationDuration = `${8 + Math.random() * 4}s`;
+
+                env.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    modalTitle.textContent = "A Little Note...";
+                    modalContent.innerHTML = `<p>${msg}</p>`;
+                    modal.classList.remove('opacity-0', 'invisible');
+                    modal.querySelector('div').classList.replace('scale-95', 'scale-100');
+                });
+                overlay.appendChild(env);
+            });
+        }
+
         // Envelope Click Logic
         envelope.addEventListener('click', () => {
             // Show the styled confirmation modal
@@ -189,6 +240,8 @@
             confirmModal.classList.remove('opacity-0', 'invisible');
             setTimeout(() => confirmModal.querySelector('div').classList.replace('scale-95', 'scale-100'), 10);
         });
+
+        spawnFlyingEnvelopes();
 
         btnYes.addEventListener('click', () => {
             lovesMe = true;
@@ -238,6 +291,8 @@
 
         // Modal Logic
         specialPhoto.addEventListener('click', () => {
+            modalTitle.textContent = "My Dearest Jo,";
+            modalContent.innerHTML = `<p>I wanted to take a moment to tell you how much you truly mean to me.</p><p>From the moment we met, I felt a connection that I can only describe as hope .</p>`;
             modal.classList.remove('opacity-0', 'invisible');
             modal.querySelector('div').classList.replace('scale-95', 'scale-100');
         });
