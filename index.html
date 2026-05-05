@@ -5,6 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>For Jo |</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+        }
+    </script>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600&family=Sour+Gummy:wght@400;600&display=swap" rel="stylesheet">
     <style>
@@ -62,16 +67,23 @@
             opacity: 1;
         }
 
-@keyframes puppy-peek {
+        /* Global smooth transition for theme switching */
+        *, *::before, *::after {
+            transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
+            transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+            transition-duration: 500ms;
+        }
+
+        @keyframes puppy-peek {
             0%, 100% { transform: translateY(0) rotate(0deg); }
             50% { transform: translateY(-75px) rotate(5deg); }
         }
     </style>
 </head>
-<body class="bg-rose-50 text-gray-800 overflow-hidden">
+<body class="bg-rose-50 text-gray-800 dark:bg-gray-900 dark:text-gray-100 overflow-hidden">
 
     <!-- Envelope Hook (Intro Overlay) -->
-    <div id="intro-overlay" class="fixed inset-0 z-[100] bg-rose-50 flex flex-col items-center justify-center transition-all duration-1000">
+    <div id="intro-overlay" class="fixed inset-0 z-[100] bg-rose-50 dark:bg-gray-900 flex flex-col items-center justify-center transition-all duration-1000">
         <div id="envelope-wrapper" class="relative shake group">
             <!-- Animated Puppy behind the envelope -->
             <div id="puppy" class="absolute left-1/2 -translate-x-1/2 top-0 animate-puppy select-none cursor-pointer">
@@ -93,13 +105,13 @@
     </div>
 
     <!-- Hero Section -->
-    <header class="h-screen flex flex-col items-center justify-center text-center px-4 bg-gradient-to-b from-rose-100 to-rose-50">
-        <h1 class="text-5xl md:text-7xl font-romantic text-rose-600 mb-4">To My Beloved Jo</h1>
-        <p class="text-lg md:text-xl text-gray-600 max-w-2xl italic">
+    <header class="h-screen flex flex-col items-center justify-center text-center px-4 bg-gradient-to-b from-rose-100 to-rose-50 dark:from-gray-800 dark:to-gray-900">
+        <h1 class="text-5xl md:text-7xl font-romantic text-rose-600 dark:text-rose-400 mb-4">To My Beloved Jo</h1>
+        <p class="text-lg md:text-xl text-gray-600 dark:text-gray-300 max-w-2xl italic">
             "Seven years ago, an unexpected meeting changed everything. Today, we stand healed, together."
         </p>
         <button onclick="document.getElementById('bg-music').play()" class="mt-8 animate-bounce cursor-pointer focus:outline-none">
-            <span class="text-rose-400">Scroll Down</span>
+            <span class="text-rose-400 dark:text-rose-300">Scroll Down</span>
         </button>
     </header>
 
@@ -112,8 +124,8 @@
             <div class="flex flex-col md:flex-row items-center gap-8">
                 <img src="images/jo9.jpg" alt="When we met" class="w-full md:w-1/2 rounded-lg shadow-lg object-cover h-64 bg-gray-200 cursor-pointer lightbox-trigger">
                 <div class="md:w-1/2">
-                    <h3 class="text-xl font-bold text-rose-400">The Unexpected Start</h3>
-                    <p class="mt-2 leading-relaxed">It’s been 7 years since that first day. Neither of us knew then that a simple meeting would lead to the most important catch-up of our lives.</p>
+                    <h3 class="text-xl font-bold text-rose-400 dark:text-rose-300">The Unexpected Start</h3>
+                    <p class="mt-2 leading-relaxed text-gray-700 dark:text-gray-300">It’s been 7 years since that first day. Neither of us knew then that a simple meeting would lead to the most important catch-up of our lives.</p>
                 </div>
             </div>
 
@@ -121,17 +133,17 @@
             <div class="flex flex-col md:flex-row-reverse items-center gap-8">
                 <img src="images/jo1.jpg" alt="Healing together" class="w-full md:w-1/2 rounded-lg shadow-lg object-cover h-64 bg-gray-200 cursor-pointer lightbox-trigger">
                 <div class="md:w-1/2">
-                    <h3 class="text-xl font-bold text-rose-400">Finding Peace</h3>
-                    <p class="mt-2 leading-relaxed">Through every conversation and shared moment. We chose to move forward, hand in hand.</p>
+                    <h3 class="text-xl font-bold text-rose-400 dark:text-rose-300">Finding Peace</h3>
+                    <p class="mt-2 leading-relaxed text-gray-700 dark:text-gray-300">Through every conversation and shared moment. We chose to move forward, hand in hand.</p>
                 </div>
             </div>
         </div>
     </section>
 
     <!-- Photo Gallery -->
-    <section class="bg-white py-20 px-6">
+    <section class="bg-white dark:bg-gray-800 py-20 px-6">
         <div class="max-w-6xl mx-auto">
-            <h2 class="text-3xl font-romantic text-center text-rose-500 mb-12 text-4xl">Our Favorite Moments</h2>
+            <h2 class="text-3xl font-romantic text-center text-rose-500 dark:text-rose-400 mb-12 text-4xl">Our Favorite Moments</h2>
             <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
                 <div class="aspect-square bg-gray-100 overflow-hidden rounded-lg">
                     <img src="images/jo2.jpg" class="hover:scale-105 transition duration-500 w-full h-full object-cover cursor-pointer lightbox-trigger">
@@ -153,18 +165,18 @@
     </section>
 
     <!-- Final Message -->
-    <footer class="py-20 text-center bg-rose-100">
+    <footer class="py-20 text-center bg-rose-100 dark:bg-gray-950">
         <p class="font-romantic text-3xl text-rose-600 mb-4">I love you, Jo.</p>
         <p class="text-sm text-gray-500 tracking-widest uppercase">sana all nalang eh no HAHAHAHA</p>
     </footer>
 
     <!-- Styled Confirmation Modal -->
     <div id="confirm-modal" class="fixed inset-0 z-[115] bg-black/60 flex items-center justify-center p-4 opacity-0 invisible transition-all duration-300">
-        <div class="bg-white w-full max-w-sm rounded-2xl p-8 shadow-2xl transform scale-95 transition-transform duration-300 text-center">
-            <h2 id="confirm-title" class="font-romantic text-3xl text-rose-600 mb-8">love moko?</h2>
+        <div class="bg-white dark:bg-gray-800 w-full max-w-sm rounded-2xl p-8 shadow-2xl transform scale-95 transition-all duration-500 text-center">
+            <h2 id="confirm-title" class="font-romantic text-3xl text-rose-600 dark:text-rose-400 mb-8">love moko?</h2>
             <div id="confirm-actions" class="flex justify-center gap-4">
                 <button id="btn-yes" class="bg-rose-500 text-white px-8 py-2 rounded-full hover:bg-rose-600 transition-all duration-300 cursor-pointer font-bold">Yes</button>
-                <button id="btn-no" class="bg-gray-200 text-gray-700 px-8 py-2 rounded-full hover:bg-gray-300 transition-all duration-300 cursor-pointer font-bold">No</button>
+                <button id="btn-no" class="bg-gray-200 text-gray-700 dark:bg-gray-700 dark:text-gray-200 px-8 py-2 rounded-full hover:bg-gray-300 dark:hover:bg-gray-600 transition-all duration-300 cursor-pointer font-bold">No</button>
             </div>
             <div id="confirm-result" class="hidden">
                 <p id="result-text" class="font-romantic text-3xl text-rose-500 mb-6"></p>
@@ -175,10 +187,10 @@
 
     <!-- Love Letter Modal -->
     <div id="love-letter-modal" class="fixed inset-0 z-[110] bg-black/60 flex items-center justify-center p-4 opacity-0 invisible transition-all duration-300">
-        <div class="bg-white w-full max-w-lg rounded-2xl p-8 shadow-2xl transform scale-95 transition-transform duration-300 relative">
+        <div class="bg-white dark:bg-gray-800 w-full max-w-lg rounded-2xl p-8 shadow-2xl transform scale-95 transition-all duration-500 relative">
             <button id="close-modal" class="absolute top-4 right-4 text-gray-400 hover:text-rose-500 text-3xl focus:outline-none">&times;</button>
-            <h2 id="modal-title" class="font-romantic text-4xl text-rose-600 mb-6 text-center"></h2>
-            <div id="modal-content" class="space-y-4 text-gray-700 leading-relaxed italic text-lg text-center">
+            <h2 id="modal-title" class="font-romantic text-4xl text-rose-600 dark:text-rose-400 mb-6 text-center"></h2>
+            <div id="modal-content" class="space-y-4 text-gray-700 dark:text-gray-200 leading-relaxed italic text-lg text-center">
                 <p>Ganda mo jo!, anw, may 1h ka pwedeng pautang? HAHHAHAHHAHAHAHAHAHAHHAH</p>
             </div>
         </div>
@@ -200,10 +212,17 @@
         <span id="music-icon" class="text-xl">🎵</span>
     </button>
 
+    <!-- Dark Mode Toggle -->
+    <button id="dark-mode-toggle" class="fixed bottom-6 right-20 z-50 bg-rose-500 text-white p-3 rounded-full shadow-lg hover:bg-rose-600 transition-all focus:outline-none flex items-center justify-center w-12 h-12 cursor-pointer">
+        <span id="dark-mode-icon" class="text-xl">🌙</span>
+    </button>
+
     <script>
         const music = document.getElementById('bg-music');
         const toggleBtn = document.getElementById('music-toggle');
         const musicIcon = document.getElementById('music-icon');
+        const darkModeToggle = document.getElementById('dark-mode-toggle');
+        const darkModeIcon = document.getElementById('dark-mode-icon');
         const envelope = document.getElementById('envelope');
         const puppy = document.getElementById('puppy');
         const puppyImg = document.getElementById('puppy-img');
@@ -445,6 +464,34 @@
 
         music.addEventListener('play', updateMusicIcon);
         music.addEventListener('pause', updateMusicIcon);
+
+        // Dark Mode Logic
+        const toggleDarkMode = (isDark) => {
+            if (isDark) {
+                document.documentElement.classList.add('dark');
+                darkModeIcon.textContent = '☀️';
+                localStorage.setItem('theme', 'dark');
+            } else {
+                document.documentElement.classList.remove('dark');
+                darkModeIcon.textContent = '🌙';
+                localStorage.setItem('theme', 'light');
+            }
+        };
+
+        // Check for saved theme preference or system preference
+        const savedTheme = localStorage.getItem('theme');
+        const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+
+        if (savedTheme === 'dark' || (!savedTheme && systemPrefersDark)) {
+            toggleDarkMode(true);
+        } else {
+            toggleDarkMode(false);
+        }
+
+        darkModeToggle.addEventListener('click', () => {
+            const isCurrentlyDark = document.documentElement.classList.contains('dark');
+            toggleDarkMode(!isCurrentlyDark);
+        });
     </script>
 </body>
 </html>
