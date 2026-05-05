@@ -48,19 +48,23 @@
         .flying-env:hover { transform: scale(1.2); }
         .flying-env.read { opacity: 0.5; filter: grayscale(1); }
         
-        @keyframes puppy-peek {
-            0%, 100% { transform: translateY(0) rotate(0deg); }
-            50% { transform: translateY(-55px) rotate(5deg); }
-        }
-        
         .animate-puppy {
             animation: puppy-peek 3s ease-in-out infinite;
+            z-index: 5; /* behind envelope */
+            /* temp for debug */
+            /* border: 4px solid red; */
         }
 
         #puppy-img {
             width: 120px;
             height: auto;
-            transition: opacity 0.15s ease;
+            transition: opacity 0.2s ease;
+            opacity: 1;
+        }
+
+@keyframes puppy-peek {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-75px) rotate(5deg); }
         }
     </style>
 </head>
@@ -74,7 +78,7 @@
                 <img id="puppy-img" src="images/puppy.jpg" alt="Waving Puppy">
             </div>
             
-            <div id="envelope" class="relative w-64 h-44 bg-rose-200 rounded-b-xl shadow-2xl cursor-pointer flex items-center justify-center">
+            <div id="envelope" class="relative w-64 h-44 bg-rose-200 rounded-b-xl shadow-2xl cursor-pointer flex items-center justify-center z-10">
                 <!-- Envelope Flap -->
                 <div id="flap" class="absolute top-0 left-0 w-full h-0 border-l-[128px] border-l-transparent border-r-[128px] border-r-transparent border-t-[80px] border-t-rose-300 rounded-t-xl"></div>
                 
@@ -282,16 +286,21 @@
         }
 
         function wavePuppy() {
-            const frames = ['images/puppy.jpg', 'images/puppy2.png', 'images/puppy3.jpg', 'images/puppy4.jpg'];
+            const frames = ['images/puppy-removebg-preview1.png', 'images/puppy2-removebg-preview.png', 'images/puppy3-removebg-preview.png', 'images/puppy4-removebg-preview.png'];
             let currentFrame = 0;
             
+            puppyImg.onerror = () => {
+                console.error('Puppy frame load failed:', frames[currentFrame]);
+                puppyImg.src = 'images/puppy.jpg'; // fallback
+            };
+            
             setInterval(() => {
-                puppyImg.style.opacity = '0.3';
+                puppyImg.style.opacity = '0.4';
                 setTimeout(() => {
                     puppyImg.src = frames[currentFrame];
                     puppyImg.style.opacity = '1';
                     currentFrame = (currentFrame + 1) % frames.length;
-                }, 75);
+                }, 100);
             }, 250); // 4 frames = 1s cycle
         }
 
